@@ -9,34 +9,38 @@ namespace Module3
     class Program
     {
         static void Main(string[] args)
-        {
+        {            
+            int number;
 
-            //Recursive
             Console.WriteLine("Please enter a number");
-            int number = Convert.ToInt32(Console.ReadLine());
-            fibRecursPrintSeq(11);
+            bool success = Int32.TryParse(Console.ReadLine(), out number);
+            if (!success)
+            {
+                Console.WriteLine("Failed to parse input");
+                Console.ReadKey();
+                return;
+            }
 
-            //Console.WriteLine("Press any key to start Matrix method");
-            //Console.ReadLine();
-            //Console.WriteLine("Fibonacci(3) = {0}", Fibonacci_matrix.FibonacciMatrixMethod(4));
-            //
-            Console.ReadLine();
+            fibIterative(number);        // Iterative
+            fibRecursPrintSeq(number);   // Recursion
+            fibTailRecursion(number);    // TailRecursion            
+
+            Console.WriteLine("\nCompleted...");
+            Console.ReadKey();
         }
 
 
-
-
-        public static void fibRecursPrintSeq(int number)
+        //Recursive
+        public static void fibRecursPrintSeq(int n)
         {
-            int[] values = new int[number];
-            fibSeqRecurs(number - 1, ref values);
-            for (int i = 0; i < number; i++)
+            int[] values = new int[n];
+            fibSeqRecurs(n - 1, ref values);
+            for (int i = 0; i < n; i++)
             {
                 Console.WriteLine(values[i]);
             }
         }
-
-
+        
         private static int fibSeqRecurs(int n, ref int[] values)
         {            
             int value;   
@@ -50,10 +54,39 @@ namespace Module3
             return value;
         }
 
-
-        public static int fibRecursMethod(int n)
+        //Tail recursion
+        public static int fibTailRecursion(int n, int a = 0, int b = 1)
         {
-            return n > 1 ? fibRecursMethod(n - 1) + fibRecursMethod(n - 2) : n;
+            Console.WriteLine(a);
+            if (n>1)
+            {                
+                return fibTailRecursion(n - 1, b, a + b);                
+            }
+            
+            return a;
+        }
+
+        //Iterative
+        public static int fibIterative(int n)
+        {
+            int a = 0; 
+            int b = 1;
+            int result = 0;
+
+            Console.WriteLine(0);
+            if (n == 0) return 0; 
+            Console.WriteLine(1);
+            if (n == 1) return 1; 
+
+            for (int i = 2; i < n; i++)
+            {
+                result = a + b;
+                a = b;
+                b = result;
+                Console.WriteLine(result);
+            }
+
+            return result;
         }
     }
 }
